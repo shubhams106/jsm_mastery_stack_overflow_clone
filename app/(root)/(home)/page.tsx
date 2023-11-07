@@ -1,3 +1,4 @@
+import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
@@ -5,36 +6,35 @@ import RenderTag from "@/components/shared/RenderTag";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
-import link from "next/link";
 import Link from "next/link";
 
 const questions = [
-  // {
-  //   _id: 1,
-  //   title: "tall depend alive height oldest grown afresh personal instant g",
-  //   tags: [
-  //     { _id: 1, name: "python" },
-  //     { _id: 2, name: "js" },
-  //   ],
-  //   auther: "Shubham singla",
-  //   upvotes: 20,
-  //   views: 2,
-  //   answers: 43,
-  //   createdAt: "2021-09-01T12:00:00.000Z",
-  // },
-  // {
-  //   _id: 2,
-  //   title: "tall depend alive height oldest grown afresh personal instant g",
-  //   tags: [
-  //     { _id: 1, name: "abc" },
-  //     { _id: 2, name: "next" },
-  //   ],
-  //   auther: "Shubham",
-  //   upvotes: 20,
-  //   views: 2,
-  //   answers: 483,
-  //   createdAt: "2021-09-01T12:00:00.000Z",
-  // },
+  {
+    _id: 1,
+    title: "tall depend alive height oldest grown afresh personal instant g",
+    tags: [
+      { _id: 1, name: "python" },
+      { _id: 2, name: "js" },
+    ],
+    author: { _id: "1", name: "Shubham singla", picture: "image_url" },
+    upvotes: 20,
+    views: 2,
+    answers: [],
+    createdAt: new Date("2021-09-01T12:00:00.000Z"),
+  },
+  {
+    _id: 2,
+    title: "tall depend alive height oldest grown afresh personal instant g",
+    tags: [
+      { _id: 1, name: "abc" },
+      { _id: 2, name: "next" },
+    ],
+    author: { _id: "2", name: "Shubham", picture: "image_url" },
+    upvotes: 20,
+    views: 2,
+    answers: [],
+    createdAt: new Date("2021-09-01T12:00:00.000Z"),
+  },
 ];
 
 export default function Home() {
@@ -49,7 +49,7 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="flex-between mt-11 gap-5 max-sm:flex max-sm:flex-col ">
+      <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
         <LocalSearchBar
           route="/"
           placeholder="Search for questions"
@@ -68,9 +68,19 @@ export default function Home() {
 
       <div className="mt-10 flex w-full flex-col gap-6">
         {questions?.length > 0 ? (
-          questions.map((question) => {
-            return "QuestionCard";
-          })
+          questions.map((question) => (
+            <QuestionCard
+              key={question._id}
+              _id={question._id}
+              tags={question.tags}
+              author={question.author}
+              upvotes={question.upvotes}
+              views={question.views}
+              answers={question.answers}
+              createdAt={question.createdAt}
+              title={question.title}
+            />
+          ))
         ) : (
           <NoResult
             title="There's no Question to show"
@@ -82,20 +92,4 @@ export default function Home() {
       </div>
     </>
   );
-}
-{
-  /* <>
-<h3 className="" key={question._id}>
-  {question.title}
-</h3>
-<div className="">
-  {question.tags.map((tag) => {
-    return (
-      <div className="flex gap-2" key={tag._id}>
-        <RenderTag _id={tag._id} name={tag.name} />
-      </div>
-    );
-  })}
-</div>
-</> */
 }
