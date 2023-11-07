@@ -2,6 +2,7 @@ import Link from "next/link";
 import React from "react";
 import RenderTag from "../shared/RenderTag";
 import Metric from "../shared/Metric";
+import { formarNumber, getTimeStamp } from "@/lib/utils";
 
 interface QuestionProps {
   _id: number;
@@ -29,7 +30,7 @@ const QuestionCard = ({
       <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
         <div className="">
           <span className="subtle-regular text-dark400_light700 line-clamp-1 flex sm:hidden">
-            {String(createdAt).slice(0, 12)}
+            {getTimeStamp(createdAt)}
           </span>
           <Link href={`/question/${_id}`}>
             <h3 className=" base-semibold sm:h3-semibold text-dark200_light900 line-clamp-1 flex-1">
@@ -51,7 +52,7 @@ const QuestionCard = ({
           imgUrl="/assets/icons/avatar.svg"
           alt="user"
           value={author.name}
-          title="- asked 1 hour ago"
+          title={`- asked ${getTimeStamp(createdAt)} `}
           textStyles="body-medium texk-dark400_light700"
           href={`/profile/${author._id}`}
           isAuthor
@@ -59,21 +60,21 @@ const QuestionCard = ({
         <Metric
           imgUrl="/assets/icons/like.svg"
           alt="Upvotes"
-          value={upvotes}
+          value={formarNumber(upvotes)}
           title="Votes"
           textStyles="small-medium texk-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/message.svg"
           alt="answers"
-          value={answers.length}
+          value={formarNumber(answers.length)}
           title="Answers"
           textStyles="small-medium texk-dark400_light800"
         />
         <Metric
           imgUrl="/assets/icons/eye.svg"
           alt="eye"
-          value={views}
+          value={formarNumber(views)}
           title="Views"
           textStyles="small-medium texk-dark400_light800"
         />

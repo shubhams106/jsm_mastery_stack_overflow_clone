@@ -17,10 +17,10 @@ const questions = [
       { _id: 2, name: "js" },
     ],
     author: { _id: "1", name: "Shubham singla", picture: "image_url" },
-    upvotes: 20,
-    views: 2,
+    upvotes: 24567800,
+    views: 27890,
     answers: [],
-    createdAt: new Date("2021-09-01T12:00:00.000Z"),
+    createdAt: new Date("2023-09-01T12:00:00.000Z"),
   },
   {
     _id: 2,
