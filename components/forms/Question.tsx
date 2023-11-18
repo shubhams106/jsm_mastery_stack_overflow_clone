@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useRef } from "react";
+import { Editor } from "@tinymce/tinymce-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -31,7 +32,12 @@ const Question = () => {
     // ✅ This will be type-safe and validated.
     console.log(values);
   }
-
+  const editorRef = useRef(null);
+  const log = () => {
+    if (editorRef.current) {
+      console.log(editorRef.current.getContent());
+    }
+  };
   return (
     <Form {...form}>
       <form
@@ -68,12 +74,42 @@ const Question = () => {
                 Detailed explanation of your problem{" "}
                 <span className="text-primary-500">*</span>
               </FormLabel>
-              {/* <FormControl className="mt-1">
-                <Input
-                  className="no-focus text-dark300_light700 background-light700_dark300 paragraph-regular light-border-2 min-h-[56px] border"
-                  {...field}
+              <FormControl className="mt-1">
+                <Editor
+                  apiKey={process.env.NEXT_PUBLIC_TINY_EDITOR_API_KEY}
+                  onInit={(evt, editor) => {
+                    // @ts-ignore
+                    editorRef.current = editor;
+                  }}
+                  initialValue=""
+                  init={{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "codesample",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                    ],
+                    toolbar:
+                      "undo redo | " +
+                      "codesample | bold italic forecolor | alignleft aligncenter |" +
+                      "alignright alignjustify | bullist numlist",
+                    content_style: "body { font-family:Inter; font-size:16px }",
+                  }}
                 />
-              </FormControl> */}
+              </FormControl>
               <FormDescription className="body-regular mt-3.5 text-light-500">
                 Introduce the problem and expand on what you put in the title.
                 Minimum 100 characters
