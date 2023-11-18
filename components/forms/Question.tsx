@@ -17,7 +17,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { QuestionSchema } from "@/lib/Validations";
-
+import { Badge } from "@/components/ui/badge";
+import Image from "next/image";
 const Question = () => {
   const form = useForm<z.infer<typeof QuestionSchema>>({
     resolver: zodResolver(QuestionSchema),
@@ -35,9 +36,48 @@ const Question = () => {
   const editorRef = useRef(null);
   const log = () => {
     if (editorRef.current) {
+      // @ts-ignore
       console.log(editorRef.current.getContent());
     }
   };
+
+  const handleInputKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement>,
+    field: any
+  ) => {
+    if (e.key === "Enter" && field.name === "tags") {
+      e.preventDefault();
+
+      const tagInput = e.target as HTMLInputElement;
+      const tagValue = tagInput.value.trim();
+
+      if (tagValue !== "") {
+        if (tagValue.length > 15) {
+          return form.setError("tags", {
+            type: "required",
+            message: "tag must be less than 15 characters",
+          });
+        }
+        // else {
+        //   console.log(tagValue, "getting my point");
+        // }
+
+        if (!field.value.includes(tagValue as never)) {
+          form.setValue("tags", [...field.value, tagValue]);
+          tagInput.value = "";
+          form.clearErrors("tags");
+          console.log(form.getValues("tags"), "tagggggg");
+        }
+      }
+    }
+  };
+
+  const handleTagRemove = (tag: string, field: any) => {
+    console.log(tag, "tag", field.name);
+    const newTags = field.value.filter((tags: string) => tags !== tag);
+    form.setValue("tags", newTags);
+  };
+
   return (
     <Form {...form}>
       <form
@@ -127,11 +167,36 @@ const Question = () => {
                 Tags <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl className="mt-1">
-                <Input
-                  placeholder="Add tags..."
-                  className="no-focus text-dark300_light700 background-light900_dark300 paragraph-regular light-border-2 min-h-[56px] border"
-                  {...field}
-                />
+                <>
+                  <Input
+                    placeholder="Add tags..."
+                    className="no-focus text-dark300_light700 background-light900_dark300 paragraph-regular light-border-2 min-h-[56px] border"
+                    // {...field}
+                    onKeyDown={(e) => handleInputKeyDown(e, field)}
+                  />
+                  {field.value.length > 0 && (
+                    <div className="mt-2.5 flex gap-2.5">
+                      {field.value.map((tag: any) => {
+                        return (
+                          <Badge
+                            key={tag}
+                            className="flex-center background-light800_dark300 text-light400_light500 subtle-medium gap-2 rounded-md border-none px-4 py-2 capitalize"
+                            onClick={() => handleTagRemove(tag, field)}
+                          >
+                            {tag}
+                            <Image
+                              width={12}
+                              height={12}
+                              src="/assets/icons/close.svg"
+                              alt="close"
+                              className="cursor-pointer object-contain invert-0 dark:invert"
+                            />
+                          </Badge>
+                        );
+                      })}
+                    </div>
+                  )}
+                </>
               </FormControl>
               <FormDescription className="body-regular mt-3.5 text-light-500">
                 Add upto 3 tags to describe what your Question is about. You
