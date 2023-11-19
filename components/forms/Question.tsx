@@ -80,22 +80,17 @@ const Question = ({ mongoUserId }: Props) => {
             message: "tag must be less than 15 characters",
           });
         }
-        // else {
-        //   console.log(tagValue, "getting my point");
-        // }
 
         if (!field.value.includes(tagValue as never)) {
           form.setValue("tags", [...field.value, tagValue]);
           tagInput.value = "";
           form.clearErrors("tags");
-          console.log(form.getValues("tags"), "tagggggg");
         }
       }
     }
   };
 
   const handleTagRemove = (tag: string, field: any) => {
-    console.log(tag, "tag", field.name);
     const newTags = field.value.filter((tags: string) => tags !== tag);
     form.setValue("tags", newTags);
   };
@@ -223,7 +218,7 @@ const Question = ({ mongoUserId }: Props) => {
                 </>
               </FormControl>
               <FormDescription className="body-regular mt-3.5 text-light-500">
-                Add upto 3 tags to describe what your Question is about. You
+                Add upto 5 tags to describe what your Question is about. You
                 need to press enter to add a tag.
               </FormDescription>
               <FormMessage className="text-red-500" />
