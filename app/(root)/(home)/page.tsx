@@ -2,42 +2,14 @@ import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilters from "@/components/home/HomeFilters";
 import Filter from "@/components/shared/Filter";
 import NoResult from "@/components/shared/NoResult";
-import RenderTag from "@/components/shared/RenderTag";
 import LocalSearchBar from "@/components/shared/search/LocalSearchBar";
 import { Button } from "@/components/ui/button";
 import { HomePageFilters } from "@/constants/filters";
+import { getQuestions } from "@/lib/actions/question.action";
 import Link from "next/link";
 
-const questions = [
-  {
-    _id: 1,
-    title: "tall depend alive height oldest grown afresh personal instant g",
-    tags: [
-      { _id: 1, name: "python" },
-      { _id: 2, name: "js" },
-    ],
-    author: { _id: "1", name: "Shubham singla", picture: "image_url" },
-    upvotes: 24567800,
-    views: 27890,
-    answers: [],
-    createdAt: new Date("2023-09-01T12:00:00.000Z"),
-  },
-  {
-    _id: 2,
-    title: "tall depend alive height oldest grown afresh personal instant g",
-    tags: [
-      { _id: 1, name: "abc" },
-      { _id: 2, name: "next" },
-    ],
-    author: { _id: "2", name: "Shubham", picture: "image_url" },
-    upvotes: 20,
-    views: 2,
-    answers: [],
-    createdAt: new Date("2021-09-01T12:00:00.000Z"),
-  },
-];
-
-export default function Home() {
+export default async function Home() {
+  const result = await getQuestions({});
   return (
     <>
       <div className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
@@ -67,8 +39,8 @@ export default function Home() {
       <HomeFilters />
 
       <div className="mt-10 flex w-full flex-col gap-6">
-        {questions?.length > 0 ? (
-          questions.map((question) => (
+        {result.questions?.length > 0 ? (
+          result.questions.map((question) => (
             <QuestionCard
               key={question._id}
               _id={question._id}
