@@ -8,7 +8,7 @@ import {
   DeleteUserParams,
   UpdateUserParams,
 } from "./shared.types";
-import { revalidatePath, revalidatePath } from "next/cache";
+import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
 
 export async function getUserById(params: any) {

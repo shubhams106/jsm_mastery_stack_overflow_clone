@@ -3,7 +3,12 @@ import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
-import { createUser, deleteUser, updateUser, updateUser } from "@/lib/actions/user.action";
+import {
+  createUser,
+  deleteUser,
+  updateUser,
+  updateUser,
+} from "@/lib/actions/user.action";
 import console from "console";
 
 export async function POST(req: Request) {
@@ -70,33 +75,34 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ message: "OK", user: mongoUser });
-  } 
-  if(eventType === 'user.updated'){
+  }
+  if (eventType === "user.updated") {
     const { id, image_url, first_name, last_name, username, email_addresses } =
-    evt.data;
+      evt.data;
 
-  const mongoUser = await updateUser({
-    clerkId: id,
-    updateData: {
+    const mongoUser = await updateUser({
+      clerkId: id,
+      updateData: {
         name: first_name + last_name ? " " + last_name : "",
         email: email_addresses[0].email_address,
         picture: image_url,
         username: username!,
-    }
-    path: `/profile/${id}`,
-    
+      },
+      path: `/profile/${id}`,
+    });
+
+    return NextResponse.json({ message: "OK", user: mongoUser });
+  }
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+  }
+
+  const deletedUser = await deleteUser({ clerkId: id! });
+
+  return NextResponse.json({
+    message: "user deleted successfully",
+    user: deletedUser,
   });
-
-  return NextResponse.json({ message: "OK", user: mongoUser });
-  }
-  if(eventType === 'user.deleted'){
-    const { id} = evt.data;
-  }
-
-  const deletedUser = await deleteUser({clerkId: id!});
-
-  return NextResponse.json({ message: "user deleted successfully", user: deletedUser});
-
 
   console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
   console.log("Webhook body:", body);
