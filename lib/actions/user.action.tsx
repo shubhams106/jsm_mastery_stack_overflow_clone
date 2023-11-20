@@ -5,7 +5,6 @@ import { connectToDatabase } from "../mongoose";
 import {
   CreateUserParams,
   DeleteUserParams,
-  DeleteUserParams,
   UpdateUserParams,
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
