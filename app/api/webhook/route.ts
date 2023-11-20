@@ -4,7 +4,6 @@ import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.action";
-import console from "console";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
@@ -53,7 +52,6 @@ export async function POST(req: Request) {
   }
 
   // Get the ID and type
-  const { id } = evt.data;
   const eventType = evt.type;
   // user.created" | "user.updated" | "user.deleted
 
@@ -90,17 +88,11 @@ export async function POST(req: Request) {
   }
   if (eventType === "user.deleted") {
     const { id } = evt.data;
+    const deletedUser = await deleteUser({ clerkId: id! });
+
+    return NextResponse.json({
+      message: "user deleted successfully",
+      user: deletedUser,
+    });
   }
-
-  const deletedUser = await deleteUser({ clerkId: id! });
-
-  return NextResponse.json({
-    message: "user deleted successfully",
-    user: deletedUser,
-  });
-
-  console.log(`Webhook with and ID of ${id} and type of ${eventType}`);
-  console.log("Webhook body:", body);
-
-  return new Response("", { status: 200 });
 }
