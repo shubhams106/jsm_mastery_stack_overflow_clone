@@ -6,8 +6,7 @@ import { NextResponse } from "next/server";
 import { createUser, deleteUser, updateUser } from "@/lib/actions/user.action";
 
 export async function POST(req: Request) {
-  // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -53,6 +52,7 @@ export async function POST(req: Request) {
 
   // Get the ID and type
   const eventType = evt.type;
+  console.log({ eventType });
   // user.created" | "user.updated" | "user.deleted
 
   if (eventType === "user.created") {
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     const mongoUser = await updateUser({
       clerkId: id,
       updateData: {
-        name: first_name + last_name ? " " + last_name : "",
+        name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
         email: email_addresses[0].email_address,
         picture: image_url,
         username: username!,
@@ -91,8 +91,9 @@ export async function POST(req: Request) {
     const deletedUser = await deleteUser({ clerkId: id! });
 
     return NextResponse.json({
-      message: "user deleted successfully",
+      message: "OK",
       user: deletedUser,
     });
   }
+  return new Response("", { status: 201 });
 }

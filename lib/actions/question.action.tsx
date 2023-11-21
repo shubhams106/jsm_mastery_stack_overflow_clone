@@ -23,6 +23,7 @@ export async function getQuestions(params: GetQuestionsParams) {
 }
 
 export async function createQuestion(params: CreateQuestionParams) {
+  console.log("createQuestion fuction calleddddddddddd");
   try {
     connectToDatabase();
     const { title, content, tags, path, author } = params;
@@ -44,7 +45,7 @@ export async function createQuestion(params: CreateQuestionParams) {
     }
 
     await Question.findByIdAndUpdate(question._id, {
-      $push: { tags: tagDocuments },
+      $push: { tags: { $each: tagDocuments } },
     });
 
     revalidatePath(path);
