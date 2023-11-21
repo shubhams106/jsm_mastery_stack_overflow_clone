@@ -46,7 +46,6 @@ const Question = ({ mongoUserId }: Props) => {
     setIsSubmitting(false);
 
     try {
-      // hello
       await createQuestion({
         title: values.title,
         tags: values.tags,
