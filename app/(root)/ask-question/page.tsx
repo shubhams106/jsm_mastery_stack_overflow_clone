@@ -8,7 +8,7 @@ const page = async () => {
   // const { userId } = auth();
 
   // const userId = "user_2YRa0sB27TwmogDSaRSaNjdk7cH";
-  const userId = "user_2YRa0sB27TwmogDSaRSaNjdk7cH";
+  const userId = "123456";
 
   console.log(userId, "userIduserIduserIduserId");
 
