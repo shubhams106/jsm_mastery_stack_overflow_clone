@@ -10,7 +10,6 @@ import {
 } from "./shared.types";
 import { revalidatePath } from "next/cache";
 import Question from "@/database/question.model";
-import error from "next/error";
 
 export async function getUserById(params: GetUserByIdParams) {
   try {
