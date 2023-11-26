@@ -9,6 +9,7 @@ export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
 
   console.log("webhook file rannnnnnnnnnnnnnnnnnnnnnnnn");
+  console.log("webhook file rannnnnnnnnnnnnnnnnnnnnnnnn");
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
