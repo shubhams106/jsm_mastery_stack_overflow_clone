@@ -8,6 +8,8 @@ import { createUser, deleteUser, updateUser } from "@/lib/actions/user.action";
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.NEXT_CLERK_WEBHOOK_SECRET;
 
+  console.log("webhook file rannnnnnnnnnnnnnnnnnnnnnnnn");
+
   if (!WEBHOOK_SECRET) {
     throw new Error(
       "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local"
@@ -53,15 +55,15 @@ export async function POST(req: Request) {
   // Get the ID and type
   const eventType = evt.type;
   console.log({ eventType });
-  // user.created" | "user.updated" | "user.deleted
 
   if (eventType === "user.created") {
+    console.log("user created hook rannnnnnnnnnnnnnnnnnnnnnnn");
     const { id, image_url, first_name, last_name, username, email_addresses } =
       evt.data;
 
     const mongoUser = await createUser({
       clerkId: id,
-      name: first_name + last_name ? " " + last_name : "",
+      name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
       email: email_addresses[0].email_address,
       picture: image_url,
       username: username!,
@@ -70,6 +72,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "OK", user: mongoUser });
   }
   if (eventType === "user.updated") {
+    console.log("user updated hook rannnnnnnnnnnnnnnnnnnnnnnn");
+
     const { id, image_url, first_name, last_name, username, email_addresses } =
       evt.data;
 
@@ -86,7 +90,10 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ message: "OK", user: mongoUser });
   }
+
   if (eventType === "user.deleted") {
+    console.log("user deleted hook rannnnnnnnnnnnnnnnnnnnnnnn");
+
     const { id } = evt.data;
     const deletedUser = await deleteUser({ clerkId: id! });
 

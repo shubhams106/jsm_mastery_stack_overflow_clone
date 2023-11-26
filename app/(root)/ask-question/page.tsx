@@ -5,7 +5,10 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const page = async () => {
-  const { userId } = auth();
+  // const { userId } = auth();
+
+  // const userId = "user_2YRa0sB27TwmogDSaRSaNjdk7cH";
+  const userId = "user_2YRa0sB27TwmogDSaRSaNjdk7cH";
 
   console.log(userId, "userIduserIduserIduserId");
 
